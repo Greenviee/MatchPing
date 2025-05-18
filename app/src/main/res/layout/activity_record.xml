@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#E3F2FD">
+
+    <!-- 검색창 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="상대 이름 검색"
+            android:background="@android:drawable/edit_text"
+            android:padding="8dp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/buttonSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="검색"
+            android:layout_marginLeft="8dp"
+            android:backgroundTint="#2196F3"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <!-- 태그 필터 ChipGroup -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupTags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 승률 및 전적 -->
+    <TextView
+        android:id="@+id/textViewWinRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="승: 0, 패: 0, 승률: 0%"
+        android:textSize="16sp"
+        android:textColor="#0D47A1"
+        android:padding="8dp"
+        android:background="@android:color/white"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 전적 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+</LinearLayout>

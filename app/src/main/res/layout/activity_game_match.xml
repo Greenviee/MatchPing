@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#E3F2FD"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 뒤로가기(메인으로) 버튼, 좌상단 -->
+    <ImageButton
+        android:id="@+id/buttonBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_media_previous"
+        android:background="@android:color/transparent"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp"
+        android:contentDescription="뒤로가기" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:padding="32dp">
+
+        <TextView
+            android:id="@+id/textMatchTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="대전 상대 선택"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#0D47A1"
+            android:layout_marginBottom="32dp" />
+
+        <Button
+            android:id="@+id/buttonMatchFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="친구와 대전"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:layout_marginBottom="24dp"
+            android:elevation="4dp"/>
+
+        <Button
+            android:id="@+id/buttonMatchOpponent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="저장된 상대와 대전"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#42A5F5"
+            android:layout_marginBottom="24dp"
+            android:elevation="4dp"/>
+
+        <Button
+            android:id="@+id/buttonAddOpponent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="새 상대 추가"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#90CAF9"
+            android:elevation="4dp"/>
+    </LinearLayout>
+</RelativeLayout>

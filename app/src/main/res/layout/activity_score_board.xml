@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#E3F2FD"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <!-- 세트 진행 정보 -->
+    <TextView
+        android:id="@+id/textSetInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세트: 1 / 5"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#2196F3"
+        android:layout_marginBottom="18dp"/>
+
+    <!-- 점수판 가로 배치 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <!-- 내 정보/점수 -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+            <TextView
+                android:id="@+id/textMyNameUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="나 (1부)"
+                android:textStyle="bold"
+                android:textColor="#0D47A1"
+                android:textSize="18sp"
+                android:layout_marginBottom="6dp"/>
+            <TextView
+                android:id="@+id/textMyScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="#1976D2"
+                android:layout_marginBottom="8dp"/>
+            <!-- 점수 조작 버튼 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/buttonMyScorePlus"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="+"
+                    android:textSize="22sp"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#fff"/>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="0dp"/>
+                <Button
+                    android:id="@+id/buttonMyScoreMinus"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="-"
+                    android:textSize="22sp"
+                    android:backgroundTint="#BBDEFB"
+                    android:textColor="#333"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 세트 점수/VS -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/textMySetScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="22sp"
+                android:textColor="#1976D2"
+                android:layout_marginBottom="6dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VS"
+                android:textSize="18sp"
+                android:textColor="#666"
+                android:layout_marginBottom="6dp"/>
+            <TextView
+                android:id="@+id/textOpponentSetScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="22sp"
+                android:textColor="#D32F2F"
+                android:layout_marginBottom="6dp"/>
+        </LinearLayout>
+
+        <!-- 상대 정보/점수 -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+            <TextView
+                android:id="@+id/textOpponentNameUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="상대 (3부)"
+                android:textStyle="bold"
+                android:textColor="#D32F2F"
+                android:textSize="18sp"
+                android:layout_marginBottom="6dp"/>
+            <TextView
+                android:id="@+id/textOpponentScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="#D32F2F"
+                android:layout_marginBottom="8dp"/>
+            <!-- 점수 조작 버튼 -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/buttonOpponentScorePlus"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="+"
+                    android:textSize="22sp"
+                    android:backgroundTint="#D32F2F"
+                    android:textColor="#fff"/>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="0dp"/>
+                <Button
+                    android:id="@+id/buttonOpponentScoreMinus"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="-"
+                    android:textSize="22sp"
+                    android:backgroundTint="#FFCDD2"
+                    android:textColor="#333"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 서브 정보 -->
+    <TextView
+        android:id="@+id/textServeInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내 서브"
+        android:textSize="16sp"
+        android:textColor="#333"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- 진행 로딩용 ProgressBar(선택) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+</LinearLayout>

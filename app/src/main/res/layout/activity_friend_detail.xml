@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#E3F2FD"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/imageFriendProfile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="18dp"
+            android:background="#E3F2FD"/>
+
+
+        <TextView
+            android:id="@+id/textFriendName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:textColor="#0D47A1"/>
+
+        <TextView
+            android:id="@+id/textFriendId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디"
+            android:textSize="17sp"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/textFriendUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="부수"
+            android:textSize="17sp"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/buttonTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="태그"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- 태그 필터 창: 기본은 GONE, 버튼 누르면 VISIBLE -->
+        <LinearLayout
+            android:id="@+id/layoutTags"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="#BBDEFB"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+            <!-- 태그 버튼들이 동적으로 들어감 -->
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

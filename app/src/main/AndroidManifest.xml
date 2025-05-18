@@ -12,19 +12,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MatchPing"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity"
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".ScoreboardActivity" />
+        <activity android:name=".RecordActivity"/>
+        <activity android:name=".AnalysisActivity"/>
+        <activity android:name=".UserInfoActivity"/>
+        <activity android:name=".EditUserInfoActivity"/>
+        <activity android:name=".FriendActivity"/>
+        <activity android:name=".FriendDetailActivity"/>
+        <activity android:name=".FriendSelectActivity"/>
+        <activity android:name=".GameMatchActivity"/>
+        <activity android:name=".GameResultActivity"/>
+        <activity android:name=".OpponentAddActivity"/>
+        <activity android:name=".OpponentSelectActivity"/>
+        <activity android:name=".ScoreBoardActivity"/>
+
+
+
 
     </application>
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
 </manifest>

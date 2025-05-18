@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +9,18 @@
     android:padding="24dp"
     android:background="#E3F2FD"> <!-- 연한 하늘색 배경 -->
 
-    <!-- 게임 시작 -->
+
+    <ImageButton
+        android:id="@+id/buttonFriend"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="start|top"
+        android:layout_margin="0dp"
+        android:src="@android:drawable/ic_menu_myplaces"
+        android:contentDescription="친구 관리"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="#2196F3" />
+
     <Button
         android:id="@+id/buttonStartGame"
         android:layout_width="match_parent"

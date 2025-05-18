@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#E3F2FD"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:padding="28dp">
+
+    <TextView
+        android:id="@+id/textGameResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경기 결과"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#0D47A1"
+        android:layout_marginBottom="22dp"/>
+
+    <TextView
+        android:id="@+id/textOpponentInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="상대 정보"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#1565C0"/>
+
+    <TextView
+        android:id="@+id/textSetScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세트 점수"
+        android:textSize="17sp"
+        android:layout_marginBottom="6dp"/>
+
+    <TextView
+        android:id="@+id/textSetHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세트별 점수"
+        android:textSize="16sp"
+        android:layout_marginBottom="22dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonRematch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다시 하기"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:layout_marginRight="16dp"/>
+
+        <Button
+            android:id="@+id/buttonGoMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메인으로"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#42A5F5"/>
+    </LinearLayout>
+</LinearLayout>

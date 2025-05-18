@@ -57,15 +57,19 @@
             android:backgroundTint="#2196F3"
             android:layout_marginBottom="16dp" />
 
-        <EditText
-            android:id="@+id/editTextPhone"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="부수"
-            android:inputType="phone"
-            android:padding="12dp"
-            android:backgroundTint="#2196F3"
-            android:layout_marginBottom="16dp" />
+            android:text="부수 선택"
+            android:textColor="#1565C0"
+            android:textSize="15sp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerUnit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"/>
 
         <Button
             android:id="@+id/buttonRegister"
