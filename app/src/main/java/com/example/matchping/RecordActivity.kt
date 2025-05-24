@@ -12,70 +12,63 @@ import com.google.android.material.chip.ChipGroup
 
 class RecordActivity : AppCompatActivity() {
 
-    private val viewModel: RecordViewModel by viewModels()
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var searchEditText: EditText
-    private lateinit var searchButton: Button
-    private lateinit var chipGroup: ChipGroup
-    private lateinit var winRateText: TextView
+    private val vm: RecordViewModel by viewModels()
+    private lateinit var rv: RecyclerView
+    private lateinit var etSearch: EditText
+    private lateinit var btnSearch: Button
+    private lateinit var chips: ChipGroup
+    private lateinit var tvWinRate: TextView
     private lateinit var adapter: RecordAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate(s: Bundle?) {
+        super.onCreate(s)
         setContentView(R.layout.activity_record)
 
-        recyclerView = findViewById(R.id.recyclerView)
-        searchEditText = findViewById(R.id.editTextSearch)
-        searchButton = findViewById(R.id.buttonSearch)
-        chipGroup = findViewById(R.id.chipGroupTags)
-        winRateText = findViewById(R.id.textViewWinRate)
+        rv = findViewById(R.id.recyclerView)
+        etSearch = findViewById(R.id.editTextSearch)
+        btnSearch = findViewById(R.id.buttonSearch)
+        chips = findViewById(R.id.chipGroupTags)
+        tvWinRate = findViewById(R.id.textViewWinRate)
 
         adapter = RecordAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(this)
 
-        // 태그 chip 동적 추가 (예시 태그)
-        val tagList = listOf("왼손잡이", "쉐이크", "횡서브", "커트", "빠른플레이")
-        for (tag in tagList) {
-            val chip = Chip(this).apply {
-                text = tag
-                isCheckable = true
-            }
-            chipGroup.addView(chip)
+        val tagList = listOf(
+            "왼손잡이", "쉐이크", "횡서브", "커트",
+            "드라이브", "속공", "수비형", "장타",
+            "스매시", "플릭"
+        )
+        tagList.forEach { t ->
+            chips.addView(Chip(this).apply {
+                text = t; isCheckable = true
+            })
         }
 
-        viewModel.loadRecent()
+        vm.loadRecent()
+        vm.matches.observe(this, Observer { applyList(it) })
+        vm.searchResults.observe(this, Observer { applyList(it) })
 
-        viewModel.matches.observe(this, Observer {
-            adapter.submitList(it)
-            showWinRate(it)
-        })
-        viewModel.searchResults.observe(this, Observer {
-            adapter.submitList(it)
-            showWinRate(it)
-        })
-
-        searchButton.setOnClickListener {
-            val query = searchEditText.text.toString()
-            if (query.isNotBlank()) {
-                viewModel.searchByName(query)
-            }
+        btnSearch.setOnClickListener {
+            val q = etSearch.text.toString().trim()
+            if (q.isNotBlank()) vm.searchByName(q)
+            else vm.loadRecent()
         }
 
-        chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == -1) {
-                viewModel.loadRecent()
-            } else {
-                val chip = findViewById<Chip>(checkedId)
-                viewModel.filterByTag(chip.text?.toString() ?: "")
+        chips.setOnCheckedChangeListener { _, id ->
+            if (id == -1) vm.loadRecent()
+            else {
+                val chip = findViewById<Chip>(id)
+                vm.filterByTag(chip.text.toString())
             }
         }
     }
 
-    private fun showWinRate(list: List<MatchResult>) {
-        val win = list.count { it.mySetScore > it.opponentSetScore }
-        val lose = list.count { it.mySetScore < it.opponentSetScore }
-        val rate = if (win + lose > 0) (win * 100 / (win + lose)) else 0
-        winRateText.text = "승: $win, 패: $lose, 승률: $rate%"
+    private fun applyList(list: List<MatchResult>) {
+        adapter.submitList(list)
+        val w = list.count { it.mySetScore > it.opponentSetScore }
+        val l = list.count { it.mySetScore < it.opponentSetScore }
+        val r = if (w + l > 0) (w * 100 / (w + l)) else 0
+        tvWinRate.text = "승: $w, 패: $l, 승률: $r%"
     }
 }

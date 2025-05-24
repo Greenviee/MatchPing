@@ -4,26 +4,31 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class FriendSelectActivity : AppCompatActivity() {
-    private val db = FirebaseFirestore.getInstance()
-    private val auth = FirebaseAuth.getInstance()
+    private val auth by lazy { FirebaseAuth.getInstance() }
+    private val db   by lazy { FirebaseFirestore.getInstance() }
 
     private lateinit var listViewFriends: ListView
     private lateinit var buttonInvite: Button
+
     private var friendList: List<Friend> = emptyList()
-    private var selectedPosition: Int = -1
+    private var selectedPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friend_select)
 
         listViewFriends = findViewById(R.id.listViewFriends)
-        buttonInvite = findViewById(R.id.buttonInvite)
+        buttonInvite    = findViewById(R.id.buttonInvite)
 
+        // 친구 목록 불러오기
         loadFriends()
 
+        listViewFriends.choiceMode = ListView.CHOICE_MODE_SINGLE
         listViewFriends.setOnItemClickListener { _, _, position, _ ->
             selectedPosition = position
             listViewFriends.setItemChecked(position, true)
@@ -32,41 +37,90 @@ class FriendSelectActivity : AppCompatActivity() {
         buttonInvite.setOnClickListener {
             if (selectedPosition == -1) {
                 Toast.makeText(this, "친구를 선택하세요.", Toast.LENGTH_SHORT).show()
-            } else {
-                val selectedFriend = friendList[selectedPosition]
-                // TODO: FCM 푸시 전송 구현
-                // 예시: sendFcmInvite(selectedFriend)
-                Toast.makeText(this, "${selectedFriend.name}님에게 대전 요청 전송!", Toast.LENGTH_SHORT).show()
-                // 실제 앱에서는 진행중 다이얼로그 띄우고, 수락 신호 수신시 다음 화면으로 이동
+                return@setOnClickListener
             }
+
+            val toFriend = friendList[selectedPosition]
+            val fromUid  = auth.currentUser?.uid
+            if (fromUid == null) {
+                Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Firestore에 matchRequests 문서 생성
+            val req = mapOf(
+                "fromUid"   to fromUid,
+                "toUid"     to toFriend.uid,
+                "timestamp" to FieldValue.serverTimestamp()
+            )
+            db.collection("matchRequests")
+                .add(req)
+                .addOnSuccessListener {
+                    Toast.makeText(this,
+                        "${toFriend.name}님에게 대전 요청을 보냈습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this,
+                        "대전 요청 실패: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
     }
 
     private fun loadFriends() {
         val uid = auth.currentUser?.uid ?: return
-        db.collection("Users").document(uid).get().addOnSuccessListener { doc ->
-            val friends = doc.get("friends") as? List<String> ?: emptyList()
-            if (friends.isNotEmpty()) {
-                db.collection("Users").whereIn(com.google.firebase.firestore.FieldPath.documentId(), friends).get()
-                    .addOnSuccessListener { snapshots ->
-                        friendList = snapshots.documents.map { userDoc ->
+        db.collection("Users").document(uid)
+            .get()
+            .addOnSuccessListener { userDoc ->
+                // "friends" 필드는 Friend UID 리스트라 가정
+                val friends = userDoc.get("friends") as? List<String> ?: emptyList()
+                if (friends.isEmpty()) {
+                    listViewFriends.adapter = ArrayAdapter(
+                        this,
+                        android.R.layout.simple_list_item_1,
+                        listOf("등록된 친구가 없습니다.")
+                    )
+                    return@addOnSuccessListener
+                }
+
+                // Firestore에서 실제 친구 정보 로드
+                db.collection("Users")
+                    .whereIn(FieldPath.documentId(), friends)
+                    .get()
+                    .addOnSuccessListener { snaps ->
+                        friendList = snaps.documents.map { f ->
                             Friend(
-                                uid = userDoc.id,
-                                name = userDoc.getString("name") ?: "",
-                                phone = userDoc.getString("phone") ?: "",
-                                id = userDoc.getString("id") ?: "",
-                                profileImageUrl = userDoc.getString("profileImageUrl")
+                                uid = f.id,
+                                name = f.getString("name") ?: "",
+                                id   = f.getString("id") ?: "",
+                                phone = f.getString("phone") ?: "",
+                                profileImageUrl = f.getString("profileImageUrl")
                             )
                         }
-                        val friendNames = friendList.map { it.name + " (" + it.id + ")" }
-                        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, friendNames)
-                        listViewFriends.adapter = adapter
+                        val names = friendList.map { it.name + " (" + it.id + ")" }
+                        listViewFriends.adapter = ArrayAdapter(
+                            this,
+                            android.R.layout.simple_list_item_single_choice,
+                            names
+                        )
                         listViewFriends.choiceMode = ListView.CHOICE_MODE_SINGLE
                     }
-            } else {
-                val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listOf("친구 없음"))
-                listViewFriends.adapter = adapter
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this,
+                            "친구 불러오기 실패: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
             }
-        }
+            .addOnFailureListener { e ->
+                Toast.makeText(this,
+                    "내 정보 불러오기 실패: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 }

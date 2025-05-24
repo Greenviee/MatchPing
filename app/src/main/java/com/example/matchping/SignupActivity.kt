@@ -38,7 +38,7 @@ class SignupActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val email = "$id@yourapp.com"
+            val email = "$id@matchping.com"
             val auth = FirebaseAuth.getInstance()
             val db = FirebaseFirestore.getInstance()
 

@@ -10,30 +10,36 @@ import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RecordAdapter : ListAdapter<MatchResult, RecordAdapter.RecordViewHolder>(diffCallback) {
+class RecordAdapter : ListAdapter<MatchResult, RecordAdapter.VH>(diff) {
+
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<MatchResult>() {
-            override fun areItemsTheSame(oldItem: MatchResult, newItem: MatchResult) = oldItem.id == newItem.id
-            override fun areContentsTheSame(oldItem: MatchResult, newItem: MatchResult) = oldItem == newItem
+        private val diff = object : DiffUtil.ItemCallback<MatchResult>() {
+            override fun areItemsTheSame(o: MatchResult, n: MatchResult) = o.id == n.id
+            override fun areContentsTheSame(o: MatchResult, n: MatchResult) = o == n
         }
     }
 
-    class RecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchResult) {
-            val sdf = SimpleDateFormat("yy.MM.dd", Locale.KOREA)
-            itemView.findViewById<TextView>(R.id.textOpponent).text = item.opponentName
-            itemView.findViewById<TextView>(R.id.textScore).text = "${item.mySetScore} : ${item.opponentSetScore}"
-            itemView.findViewById<TextView>(R.id.textDate).text = sdf.format(Date(item.date))
-            itemView.findViewById<TextView>(R.id.textTags).text = item.detail // detail에 태그 등 저장시
+    class VH(v: View) : RecyclerView.ViewHolder(v) {
+        private val tvName  = v.findViewById<TextView>(R.id.textOpponent)
+        private val tvDate  = v.findViewById<TextView>(R.id.textDate)
+        private val tvScore = v.findViewById<TextView>(R.id.textScore)
+        private val tvTags  = v.findViewById<TextView>(R.id.textTags)
+        private val fmt = SimpleDateFormat("yy.MM.dd", Locale.KOREA)
+
+        fun bind(m: MatchResult) {
+            tvName.text  = m.opponentName
+            tvScore.text = "${m.mySetScore} : ${m.opponentSetScore}"
+            tvDate.text  = fmt.format(Date(m.date))
+            tvTags.apply {
+                text  = m.tags.joinToString(", ")
+                alpha = 0.6f
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_match_result, parent, false)
-        return RecordViewHolder(v)
-    }
+    override fun onCreateViewHolder(p: ViewGroup, t: Int) =
+        VH(LayoutInflater.from(p.context)
+            .inflate(R.layout.item_match_result, p, false))
 
-    override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
+    override fun onBindViewHolder(h: VH, pos: Int) = h.bind(getItem(pos))
 }

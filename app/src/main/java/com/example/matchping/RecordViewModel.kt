@@ -7,32 +7,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class RecordViewModel(application: Application) : AndroidViewModel(application) {
-    private val db = AppDatabase.getDatabase(application)
-    private val matchDao = db.matchResultDao()
+class RecordViewModel(app: Application) : AndroidViewModel(app) {
+    private val dao = AppDatabase.getDatabase(app).matchResultDao()
 
     private val _matches = MutableLiveData<List<MatchResult>>()
-    val matches: LiveData<List<MatchResult>> get() = _matches
+    val matches: LiveData<List<MatchResult>> = _matches
 
     private val _searchResults = MutableLiveData<List<MatchResult>>()
-    val searchResults: LiveData<List<MatchResult>> get() = _searchResults
+    val searchResults: LiveData<List<MatchResult>> = _searchResults
 
-    fun loadRecent() {
-        viewModelScope.launch {
-            _matches.postValue(matchDao.getRecentMatches())
-        }
+    fun loadRecent() = viewModelScope.launch {
+        _matches.postValue(dao.getRecentMatches(20))
     }
 
-    fun searchByName(name: String) {
-        viewModelScope.launch {
-            _searchResults.postValue(matchDao.searchMatchesByName("%$name%"))
-        }
+    fun searchByName(name: String) = viewModelScope.launch {
+        _searchResults.postValue(dao.getMatchesByOpponent(name))
     }
 
-    fun filterByTag(tag: String) {
-        viewModelScope.launch {
-            val all = matchDao.getAllMatches()
-            _searchResults.postValue(all.filter { it.detail.contains(tag) })
-        }
+    fun filterByTag(tag: String) = viewModelScope.launch {
+        val all = dao.getAllMatches()
+        _searchResults.postValue(all.filter { it.tags.contains(tag) })
     }
 }
