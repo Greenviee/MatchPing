@@ -2,12 +2,12 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
+      <SelectionState runConfigName="MatchPing.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-24T05:27:05.856172500Z">
+        <DropdownSelection timestamp="2025-05-27T02:00:37.903782800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\jinwo\.android\avd\Medium_Phone_API_36.0_3.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Lee Seungwook\.android\avd\Pixel_2.avd" />
             </handle>
           </Target>
         </DropdownSelection>
