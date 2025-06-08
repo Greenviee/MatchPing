@@ -1,59 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
     android:orientation="vertical"
-    android:background="#E3F2FD"
-    android:padding="20dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/primary_blue"
+    android:paddingTop="5dp"
+    android:paddingBottom="0dp"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp">
+
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="10dp">
+    android:id="@+id/topToolbar"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:layout_marginBottom="10dp">
 
-        <ImageButton
-            android:id="@+id/buttonBackFriend"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@android:drawable/ic_menu_revert"
-            android:contentDescription="뒤로가기"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="#2196F3" />
+    <ImageButton
+        android:id="@+id/buttonBackFriend"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_revert"
+        android:contentDescription="뒤로가기"
+        android:background="?attr/selectableItemBackgroundBorderless"
+         />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
 
-        <ImageButton
-            android:id="@+id/buttonSyncContacts"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@android:drawable/ic_popup_sync"
-            android:contentDescription="주소록 동기화"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="#2196F3" />
+    <ImageButton
+        android:id="@+id/buttonSyncContacts"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_popup_sync"
+        android:contentDescription="주소록 동기화"
+        android:background="?attr/selectableItemBackgroundBorderless"
+         />
     </LinearLayout>
 
+        <!-- 2) 아이디로 친구 추가 영역 -->
     <LinearLayout
+        android:id="@+id/addByIdContainer"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="10dp">
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_add_by_id_rounded"
+        android:padding="8dp"
+        android:gravity="center_vertical">
 
+        <!-- 2-1) EditText: 아이디 입력란 -->
         <EditText
             android:id="@+id/editTextFriendId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="아이디로 친구 추가"
             android:layout_weight="1"
-            android:backgroundTint="#2196F3"
-            android:padding="10dp"/>
+            android:hint="아이디로 친구 추가"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#BBBBBB" />
 
+        <!-- 2-2) 추가 버튼 -->
         <Button
             android:id="@+id/buttonAddFriendById"
             android:layout_width="wrap_content"
@@ -61,24 +78,54 @@
             android:text="추가"
             android:layout_marginStart="8dp"
             android:backgroundTint="#2196F3"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textFriendTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="내 친구 목록"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#0D47A1"
-        android:layout_marginBottom="8dp"/>
+        <!-- 3) 친구 목록 전체를 감싸는 흰색 박스 (위쪽 둥글게 유지, 좌우 끝까지 꽉 차게) -->
+    <LinearLayout
+    android:id="@+id/friendListContainer"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="@drawable/bg_white_rounded"
+    android:clipToPadding="false">
 
-    <ListView
-        android:id="@+id/listViewFriends"
+    <!-- (A) 흰색 박스 위쪽 끝을 화면에 딱 맞추기 위해 상단 패딩 없음 -->
+    <!-- (B) 좌우로 완전히 펼치기 위해 paddingStart/End는 0dp로 둡니다. -->
+
+    <!-- 3-1) 내부 여백용 패딩을 위아래로만 줍니다. -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="#B3E5FC"
-        android:dividerHeight="1dp"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="12dp">
+
+        <!-- 3-1-1) “내 친구 목록” 제목 -->
+        <TextView
+            android:id="@+id/textFriendTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="내 친구 목록"
+            android:textColor="#0D47A1"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+        <ListView
+            android:id="@+id/listViewFriends"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#B3E5FC"
+            android:dividerHeight="1dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="0dp" />
+    </LinearLayout>
+
+    </LinearLayout>

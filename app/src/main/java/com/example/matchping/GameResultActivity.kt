@@ -37,9 +37,9 @@ class GameResultActivity : AppCompatActivity() {
         // 3) 화면 표시
         findViewById<TextView>(R.id.textOpponentInfo).text =
             "상대: $opponentName / $opponentUnit\n태그: ${selectedTags.joinToString(", ")}"
-        findViewById<TextView>(R.id.textSetScore).text =
+        findViewById<TextView>(R.id.textSetScoreLabel).text =
             "최종 세트 점수: $mySetScore : $opponentSetScore"
-        findViewById<TextView>(R.id.textSetHistory).text =
+        findViewById<TextView>(R.id.textSetHistoryLabel).text =
             "세트별 점수: ${setHistory.replace(",", "  ")}"
         findViewById<TextView>(R.id.textGameResult).text =
             when {

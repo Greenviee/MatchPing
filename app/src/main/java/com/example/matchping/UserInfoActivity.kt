@@ -16,7 +16,7 @@ class UserInfoActivity : AppCompatActivity() {
     private lateinit var textPhone: TextView
     private lateinit var textUnit: TextView
     private lateinit var buttonBack: ImageButton
-    private lateinit var buttonEdit: ImageButton
+    private lateinit var buttonEdit: Button //타입 안맞아서 고쳤슴
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()

@@ -1,106 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E3F2FD"
-    android:padding="24dp">
+    android:background="@android:color/white"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
 
-        <!-- 상단 툴바 -->
-        <LinearLayout
+        <!-- 1) 순수 파란색 헤더 -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="20dp">
+            android:layout_height="224dp"
+            android:background="#2196F3">
 
+            <!-- 반드시 ImageButton으로 선언해야 합니다 -->
             <ImageButton
                 android:id="@+id/buttonBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_gravity="start|top"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_revert"
-                android:contentDescription="메인으로"
-                android:tint="#2196F3" />
+                android:contentDescription="뒤로가기" />
 
+            <!-- 헤더 아이콘 -->
+            <ImageView
+                android:id="@+id/imageProfile"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="32dp"
+                android:contentDescription="헤더 아이콘"
+                android:src="@drawable/ic_user" />
+
+            <!-- 헤더 제목 텍스트 -->
+            <TextView
+                android:id="@+id/textHeaderTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="50dp"
+                android:text="사용자 정보"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- 2) 흰색 콘텐츠 영역 (위쪽만 둥글게 처리된 배경) -->
+        <LinearLayout
+            android:id="@+id/contentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-40dp"
+            android:background="@drawable/bg_content_top_rounded"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="56dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- 2-1) 이름 Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- 아이콘: 녹색 원 안의 사람 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconName"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="이름 아이콘"
+                    android:src="@drawable/ic_name" />
+
+                <!-- 레이블: '이름' -->
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="이름"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <!-- 밑줄 -->
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_marginBottom="16dp"
+                android:background="#BBDEFB" />
 
-            <ImageButton
+            <!-- 2-2) 아이디 Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- 아이콘: 빨강 원 안의 위치 핀 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconId"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="아이디 아이콘"
+                    android:src="@drawable/ic_id" />
+
+                <!-- 레이블: '아이디' -->
+                <TextView
+                    android:id="@+id/textId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="아이디"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- 밑줄 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="#BBDEFB" />
+
+            <!-- 2-3) 전화번호 Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- 아이콘: 오렌지 원 안의 전화 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconPhone"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="전화번호 아이콘"
+                    android:src="@drawable/ic_phone" />
+
+                <!-- 레이블: '전화번호' -->
+                <TextView
+                    android:id="@+id/textPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="전화번호"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- 밑줄 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="#BBDEFB" />
+
+            <!-- 2-4) 부수 Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- 아이콘: 파랑 원 안의 부수 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconUnit"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="부수 아이콘"
+                    android:src="@drawable/ic_unit" />
+
+                <!-- 레이블: '부수' -->
+                <TextView
+                    android:id="@+id/textUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="부수"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- 2-5) 편집 버튼 -->
+            <Button
                 android:id="@+id/buttonEdit"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_edit"
-                android:contentDescription="편집"
-                android:tint="#2196F3" />
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_edit_button"
+                android:elevation="4dp"
+                android:text="편집"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:backgroundTint="@null" />
+
+            <!-- 2-6) 로그아웃 버튼 (붉은색) -->
+            <Button
+                android:id="@+id/buttonLogout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_logout_button"
+                android:elevation="4dp"
+                android:text="로그아웃"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:backgroundTint="@null" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageProfile"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@android:drawable/sym_def_app_icon"
-            android:layout_marginBottom="28dp"
-            android:scaleType="centerCrop"
-            android:elevation="4dp" />
-
-        <TextView
-            android:id="@+id/textName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="이름"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#0D47A1"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:id="@+id/textId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="아이디"
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="전화번호"
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textUnit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="부수"
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/buttonLogout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="로그아웃"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#F44336"
-            android:textSize="16sp"
-            android:elevation="4dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginBottom="16dp"/>
-
     </LinearLayout>
 </ScrollView>

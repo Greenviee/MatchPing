@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#E3F2FD"
-    android:padding="24dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#2196F3">
+
+    <!-- 1) 파란 헤더 (곡선 처리 전) -->
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="188dp"
+        android:background="#2196F3" />
+
+    <!-- 2) 프로필 사진 (헤더 아래, 반쯤 겹치도록) -->
+    <ImageView
+        android:id="@+id/imageFriendProfile"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="친구 프로필" />
+
+    <!-- 3) 흰색 곡선 처리된 콘텐츠 영역 -->
+    <ScrollView
+        android:id="@+id/scrollContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_content_top_rounded"
+        android:padding="24dp">
 
     <LinearLayout
         android:orientation="vertical"
@@ -11,63 +37,61 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <ImageView
-            android:id="@+id/imageFriendProfile"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="18dp"
-            android:background="#E3F2FD"/>
-
-
+        <!-- 4) 친구 이름 -->
         <TextView
             android:id="@+id/textFriendName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이름"
+            android:textColor="#0D47A1"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"
-            android:textColor="#0D47A1"/>
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp" />
 
+        <!-- 5) 친구 아이디 -->
         <TextView
             android:id="@+id/textFriendId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="아이디"
             android:textSize="17sp"
-            android:layout_marginBottom="4dp"/>
+            android:textColor="#0D47A1"
+            android:layout_marginBottom="4dp" />
 
+        <!-- 6) 친구 부수 -->
         <TextView
             android:id="@+id/textFriendUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="부수"
             android:textSize="17sp"
-            android:layout_marginBottom="24dp"/>
+            android:textColor="#0D47A1"
+            android:layout_marginBottom="24dp" />
 
+        <!-- 7) 태그 토글 버튼 -->
         <Button
             android:id="@+id/buttonTag"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="태그"
-            android:backgroundTint="#2196F3"
+            android:background="@drawable/bg_edit_button"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="8dp"/>
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
 
-        <!-- 태그 필터 창: 기본은 GONE, 버튼 누르면 VISIBLE -->
+        <!-- 8) 태그 목록 (기본 GONE, 버튼 클릭 시 VISIBLE) -->
         <LinearLayout
             android:id="@+id/layoutTags"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:background="#BBDEFB"
+            android:background="#FFFFFFFF"
             android:padding="16dp"
             android:layout_marginBottom="16dp">
-            <!-- 태그 버튼들이 동적으로 들어감 -->
+            <!-- 동적 태그 버튼들 삽입 -->
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>
+    </RelativeLayout>

@@ -1,65 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#E3F2FD"
+    android:background="#2196F3"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 뒤로가기(메인으로) 버튼, 좌상단 -->
-    <ImageButton
-        android:id="@+id/buttonBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@android:drawable/ic_media_previous"
-        android:background="@android:color/transparent"
-        android:layout_alignParentStart="true"
-        android:layout_margin="16dp"
-        android:contentDescription="뒤로가기" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:gravity="center"
+    <!-- 1) 파란 헤더 영역 -->
+    <FrameLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:padding="32dp">
+        android:layout_height="120dp"
+        android:background="#2196F3">
 
+        <!-- 뒤로가기 버튼 (좌상단) -->
+        <ImageButton
+            android:id="@+id/buttonBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_previous"
+            android:tint="#FFFFFF"
+            android:contentDescription="뒤로가기" />
+
+        <!-- "대전 상대 선택" 제목 (센터) -->
         <TextView
             android:id="@+id/textMatchTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="대전 상대 선택"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#0D47A1"
-            android:layout_marginBottom="32dp" />
+            android:textColor="#FFFFFF" />
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/buttonMatchFriend"
+    <!-- 2) 흰색 곡선 처리된 콘텐츠 영역 -->
+    <LinearLayout
+        android:id="@+id/curveContainer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_content_top_rounded"
+        android:paddingTop="32dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp">
+
+        <!-- 2-1) 버튼 영역 -->
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="친구와 대전"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#2196F3"
-            android:layout_marginBottom="24dp"
-            android:elevation="4dp"/>
+            android:gravity="center_horizontal">
 
-        <Button
-            android:id="@+id/buttonMatchOpponent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="저장된 상대와 대전"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#42A5F5"
-            android:layout_marginBottom="24dp"
-            android:elevation="4dp"/>
+            <Button
+                android:id="@+id/buttonMatchFriend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="친구와 대전"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#2196F3"
+                android:layout_marginBottom="24dp"
+                android:elevation="4dp" />
 
-        <Button
-            android:id="@+id/buttonAddOpponent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="새 상대 추가"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#90CAF9"
-            android:elevation="4dp"/>
+            <Button
+                android:id="@+id/buttonMatchOpponent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="저장된 상대와 대전"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#42A5F5"
+                android:layout_marginBottom="24dp"
+                android:elevation="4dp" />
+
+            <Button
+                android:id="@+id/buttonAddOpponent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="새 상대 추가"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#90CAF9"
+                android:elevation="4dp" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

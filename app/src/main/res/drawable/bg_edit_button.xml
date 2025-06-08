@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- 버튼 내부를 파란색(#0D47A1)으로 채웁니다 -->
+    <solid android:color="#0D47A1" />
+    <!-- 모서리에 둥근 반경(24dp)을 줘서 높이 48dp 버튼 양옆이 둥글게 보이도록 합니다 -->
+    <corners android:radius="24dp" />
+</shape>

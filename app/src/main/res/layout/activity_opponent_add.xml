@@ -1,71 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#E3F2FD"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#2196F3"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!-- 1) 파란 헤더 영역 -->
+    <FrameLayout
+        android:id="@+id/headerAddOpponent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_height="120dp"
+        android:background="#2196F3">
 
+        <!-- 뒤로가기 버튼 (좌상단) -->
+        <ImageButton
+            android:id="@+id/buttonBackAddOpponent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_previous"
+            android:tint="#FFFFFF"
+            android:contentDescription="뒤로가기" />
+
+        <!-- "새 상대 추가" 제목 (헤더 중앙) -->
         <TextView
+            android:id="@+id/textAddOpponentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="새 상대 추가"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#0D47A1"
-            android:layout_marginBottom="18dp"/>
+            android:textColor="#FFFFFF" />
+    </FrameLayout>
 
-        <EditText
-            android:id="@+id/editTextOpponentName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="상대 이름"
-            android:padding="12dp"
-            android:backgroundTint="#2196F3"
-            android:layout_marginBottom="12dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="부수 선택"
-            android:textColor="#1565C0"
-            android:textSize="15sp"
-            android:layout_marginBottom="4dp"/>
-
-        <Spinner
-            android:id="@+id/spinnerOpponentUnit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="태그 선택"
-            android:textSize="16sp"
-            android:textColor="#1565C0"
-            android:layout_marginBottom="8dp" />
+    <!-- 2) 흰색 곡선 처리된 콘텐츠 영역 -->
+    <ScrollView
+        android:id="@+id/scrollContainerAddOpponent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerAddOpponent"
+        android:layout_marginTop="-24dp"
+        android:background="@drawable/bg_content_top_rounded"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="24dp">
 
         <LinearLayout
-            android:id="@+id/layoutOpponentTags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginBottom="18dp"/>
-
-        <Button
-            android:id="@+id/buttonAddOpponent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="등록"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#2196F3"/>
-    </LinearLayout>
-</ScrollView>
+            android:gravity="center_horizontal">
+
+            <!-- 1) 상대 이름 입력란 + 밑줄 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="12dp">
+
+                <EditText
+                    android:id="@+id/editTextOpponentName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="상대 이름"
+                    android:padding="12dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp" />
+
+                <!-- 밑줄 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#BBDEFB" />
+            </LinearLayout>
+
+            <!-- 2) 부수 선택 레이블 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="부수 선택"
+                android:textColor="#1565C0"
+                android:textSize="15sp"
+                android:layout_marginBottom="4dp" />
+
+            <!-- 부수 선택 Spinner -->
+            <Spinner
+                android:id="@+id/spinnerOpponentUnit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp" />
+
+            <!-- 3) 태그 선택 레이블 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="태그 선택"
+                android:textSize="16sp"
+                android:textColor="#1565C0"
+                android:layout_marginBottom="8dp" />
+
+            <!-- 태그들을 담을 레이아웃 (필요 시 동적 추가) -->
+            <LinearLayout
+                android:id="@+id/layoutOpponentTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginBottom="18dp" />
+
+            <!-- 4) 등록 버튼 -->
+            <Button
+                android:id="@+id/buttonAddOpponent"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="등록"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#2196F3"
+                android:textSize="16sp"
+                android:elevation="4dp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

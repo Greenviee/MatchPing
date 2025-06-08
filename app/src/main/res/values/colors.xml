@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- 화면 배경색(파란색) -->
+    <color name="primary_blue">#1565C0</color>
+
+    <!-- 로고 오렌지 계열 -->
+    <color name="logo_orange_light">#FF8A65</color>
+    <color name="logo_orange_dark">#F4511E</color>
+
+    <!-- 버튼 색상 -->
+    <color name="btn_orange">#FF5722</color>
+    <color name="btn_outline_white">#FFFFFF</color>
+
+    <!-- 텍스트 색상 -->
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_gray_light">#B0BEC5</color>
+
+    <!-- 체크박스 체크 색 -->
+    <color name="checkbox_orange">#FF5722</color>
+
+    <color name="primary_bg">#E3F2FD</color> <!-- 혹은 기존 #E3F2FD -->
+
+    <!-- 메뉴 섹션 색상 예시 (파스텔 톤) -->
+    <color name="section_hard_liquors">#90CAF9</color>   <!-- 연파랑 -->
+    <color name="section_wines">#FFCC80</color>          <!-- 옅은 오렌지 -->
+    <color name="section_soups">#F48FB1</color>          <!-- 연핑크 -->
+    <color name="section_burgers">#80DEEA</color>        <!-- 연민트 -->
+
+    <!-- 텍스트, 아이콘 색상 -->
+    <color name="section_text_white">#FFFFFF</color>
+    <color name="section_arrow_gray">#BBDEFB</color>     <!-- 화살표용 연회색(원하시면 변경) -->
 </resources>

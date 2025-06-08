@@ -1,72 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="32dp"
-    android:background="#E3F2FD"> <!-- 시원한 하늘색 배경 -->
+    android:background="@color/primary_blue">
 
-    <ImageView
-        android:id="@+id/imageLogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginBottom="40dp" />
-
-    <EditText
-        android:id="@+id/editTextId"
+    <!-- ScrollView 내부에 중앙 정렬을 위한 LinearLayout 추가 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="아이디"
-        android:padding="12dp"
-        android:backgroundTint="#2196F3"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
 
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="비밀번호"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:backgroundTint="#2196F3"
-        android:layout_marginBottom="24dp" />
+        <!-- 1) 탁구채 로고 -->
+        <ImageView
+            android:id="@+id/imageLogo"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/main_logo"
+            android:contentDescription="Table Tennis Logo"
+            android:layout_marginBottom="12dp" />
 
-    <CheckBox
-        android:id="@+id/checkBoxAutoLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="자동 로그인"
-        android:layout_marginBottom="16dp"/>
+        <!-- 2) 제목 텍스트 -->
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Match Ping"
+            android:textColor="@color/text_white"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="48dp" />
 
+        <!-- 3) ID 입력란 언더라인만 (텍스트 힌트는 흰색) -->
+        <EditText
+            android:id="@+id/editTextId"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:hint="ID"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_gray_light"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="4dp"
+            android:padding="0dp"
+            android:textSize="16sp" />
+        <!-- 언더라인 셰이프 추가 -->
+        <View
+            android:layout_width="330dp"
+            android:layout_height="1dp"
+            android:background="@color/text_white"
+            android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그인"
-        android:backgroundTint="#2196F3"
-        android:textColor="#FFFFFF"
-        android:elevation="4dp"
-        android:layout_marginBottom="12dp" />
+        <!-- 4) PASSWORD 입력란 언더라인만 -->
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:hint="PASSWORD"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_gray_light"
+            android:background="@android:color/transparent"
+            android:inputType="textPassword"
+            android:layout_marginBottom="4dp"
+            android:padding="0dp"
+            android:textSize="16sp" />
+        <!-- 언더라인 셰이프 추가 -->
+        <View
+            android:layout_width="330dp"
+            android:layout_height="1dp"
+            android:background="@color/text_white"
+            android:layout_marginBottom="32dp" />
 
-    <Button
-        android:id="@+id/buttonSignup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="회원가입"
-        android:backgroundTint="#2196F3"
-        android:textColor="#FFFFFF"
-        android:elevation="4dp"
-        android:layout_marginBottom="36dp" />
+        <!-- 5) 자동 로그인 체크박스 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="48dp">
 
-    <Button
-        android:id="@+id/buttonGuest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="게스트로 시작하기"
-        android:backgroundTint="#90CAF9"
-        android:textColor="#FFFFFF"
-        android:elevation="4dp" />
-</LinearLayout>
+            <CheckBox
+                android:id="@+id/checkBoxAutoLogin"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:buttonTint="@color/checkbox_orange"
+                android:layout_marginEnd="8dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
+
+            <TextView
+                android:id="@+id/textAutoLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AUTO LOGIN"
+                android:textColor="@color/checkbox_orange"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="310dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_outline_white"
+            android:text="LOG IN"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/buttonSignup"
+            android:layout_width="310dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_outline_white"
+            app:backgroundTint="@null"
+            android:text="SIGN UP"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonGuest"
+            android:layout_width="310dp"
+            android:layout_height="44dp"
+            android:background="@drawable/btn_outline_white"
+            app:backgroundTint="@null"
+            android:text="GUEST START"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

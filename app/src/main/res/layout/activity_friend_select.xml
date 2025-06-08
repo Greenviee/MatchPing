@@ -1,35 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootInviteLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E3F2FD"
-    android:padding="24dp">
+    android:background="@color/primary_blue">
 
-    <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="친구 선택"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#0D47A1"
-        android:layout_marginBottom="18dp"/>
-
-    <ListView
-        android:id="@+id/listViewFriends"
+    <!-- 1) 상단 툴바(뒤로가기만) -->
+    <LinearLayout
+        android:id="@+id/topToolbarInvite"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="#2196F3"
-        android:dividerHeight="2dp"/>
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-    <Button
-        android:id="@+id/buttonInvite"
+        <ImageButton
+            android:id="@+id/buttonBackInvite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            android:tint="#FFFFFF"
+            android:contentDescription="뒤로가기" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- 2) 흰색 곡선 상단 처리된 컨테이너 -->
+    <LinearLayout
+        android:id="@+id/inviteContainer"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="초대"
-        android:backgroundTint="#2196F3"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="18dp"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_content_top_rounded"
+        android:paddingTop="32dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp">
+
+        <!-- 2-1) “친구 선택” 제목 -->
+        <TextView
+            android:id="@+id/textTitleInvite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="친구 선택"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#0D47A1"
+            android:layout_marginBottom="18dp" />
+
+        <!-- 2-2) 친구 목록 -->
+        <ListView
+            android:id="@+id/listViewFriendsInvite"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="#2196F3"
+            android:dividerHeight="2dp" />
+
+        <!-- 2-3) 하단 “초대” 버튼 -->
+        <Button
+            android:id="@+id/buttonInvite"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_edit_button"
+            android:text="초대"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:elevation="4dp"
+            app:backgroundTint="@null" />
+    </LinearLayout>
 </LinearLayout>

@@ -1,35 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="#E3F2FD"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#2196F3"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="저장된 상대 선택"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#0D47A1"
-        android:layout_marginBottom="18dp"/>
-
-    <ListView
-        android:id="@+id/listViewOpponents"
+    <!-- 1) 파란 헤더 영역 -->
+    <FrameLayout
+        android:id="@+id/headerSelectStoredOpponent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="#2196F3"
-        android:dividerHeight="2dp"/>
+        android:layout_height="120dp"
+        android:background="#2196F3">
 
-    <Button
-        android:id="@+id/buttonSelectOpponent"
+        <!-- 뒤로가기 버튼 (좌상단) -->
+        <ImageButton
+            android:id="@+id/buttonBackStoredOpponent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_previous"
+            android:contentDescription="뒤로가기" />
+
+        <!-- "저장된 상대 선택" 제목 (헤더 중앙) -->
+        <TextView
+            android:id="@+id/textStoredOpponentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="저장된 상대 선택"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+    </FrameLayout>
+
+    <!-- 2) 흰색 곡선 처리된 콘텐츠 영역 -->
+    <LinearLayout
+        android:id="@+id/curveContainerStoredOpponent"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="선택"
-        android:backgroundTint="#2196F3"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="18dp"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerSelectStoredOpponent"
+        android:layout_marginTop="-24dp"
+        android:background="@drawable/bg_content_top_rounded"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="24dp">
+
+        <!-- 2-1) 친구 목록 제목은 헤더에 이미 포함되었으므로 제거 -->
+
+        <!-- 2-2) 저장된 상대 목록 -->
+        <ListView
+            android:id="@+id/listViewOpponents"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="#2196F3"
+            android:dividerHeight="2dp" />
+
+        <!-- 2-3) 하단 “선택” 버튼 -->
+        <Button
+            android:id="@+id/buttonSelectOpponent"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_edit_button"
+            android:text="선택"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:elevation="4dp"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+</RelativeLayout>

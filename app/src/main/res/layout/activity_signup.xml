@@ -1,84 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E3F2FD"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:padding="0dp">   <!-- 화면 여백 제거 -->
 
+    <!-- 카드 형태의 파란색 배경 (모서리 둥글게) -->
     <LinearLayout
+        android:id="@+id/cardContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:background="@drawable/bg_signup_card"
+        android:padding="24dp"
+        android:gravity="center_vertical|center_horizontal">  <!-- 수직 중앙 배치 -->
 
+        <!-- 1) 타이틀 -->
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="회원가입"
-            android:textSize="24sp"
-            android:textColor="#0D47A1"
-            android:layout_marginBottom="32dp" />
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp" />  <!-- 상단 여백 최소화 -->
 
-        <EditText
-            android:id="@+id/editTextName"
+        <!-- 2) 이름 입력란 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="이름"
-            android:padding="12dp"
-            android:backgroundTint="#2196F3"
-            android:layout_marginBottom="16dp" />
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp">    <!-- 간격 조정 -->
 
-        <EditText
-            android:id="@+id/editTextId"
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이름"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#BBDEFB"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="4dp" />
+
+            <!-- 언더라인 (1dp 높이, 연한 하늘색) -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BBDEFB" />
+        </LinearLayout>
+
+        <!-- 3) 아이디 입력란 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="아이디"
-            android:padding="12dp"
-            android:backgroundTint="#2196F3"
-            android:layout_marginBottom="16dp" />
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp">
 
-        <EditText
-            android:id="@+id/editTextPassword"
+            <EditText
+                android:id="@+id/editTextId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이디"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#BBDEFB"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:inputType="text"
+                android:layout_marginBottom="4dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BBDEFB" />
+        </LinearLayout>
+
+        <!-- 4) 비밀번호 입력란 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="비밀번호"
-            android:inputType="textPassword"
-            android:padding="12dp"
-            android:backgroundTint="#2196F3"
-            android:layout_marginBottom="16dp" />
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp">
 
-        <EditText
-            android:id="@+id/editTextPhone"
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#BBDEFB"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:inputType="textPassword"
+                android:layout_marginBottom="4dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BBDEFB" />
+        </LinearLayout>
+
+        <!-- 5) 전화번호 입력란 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="전화번호"
-            android:inputType="phone"
-            android:padding="12dp"
-            android:backgroundTint="#2196F3"
-            android:layout_marginBottom="16dp" />
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp">
 
+            <EditText
+                android:id="@+id/editTextPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="전화번호"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#BBDEFB"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:inputType="phone"
+                android:layout_marginBottom="4dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BBDEFB" />
+        </LinearLayout>
+
+        <!-- 6) 부수 선택 텍스트 -->
         <TextView
+            android:id="@+id/tvSubLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="부수 선택"
-            android:textColor="#1565C0"
+            android:textColor="#FFB300"
             android:textSize="15sp"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="8dp" />
 
+        <!-- 7) Spinner (흰색 배경, 모서리 약간 둥글게) -->
         <Spinner
             android:id="@+id/spinnerUnit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="22dp"/>
+            android:layout_width="361dp"
+            android:layout_height="37dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_spinner_white"
+            android:popupBackground="#FFFFFF"
+            android:spinnerMode="dropdown" />
 
+        <!-- (Optional) 위 컨텐츠들 아래에 빈 공간을 자동 분배하는 Spacer -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- 8) 회원가입 완료 버튼 -->
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:background="@color/checkbox_orange"
             android:text="회원가입 완료"
-            android:backgroundTint="#2196F3"
             android:textColor="#FFFFFF"
-            android:elevation="4dp" />
+            android:textSize="16sp"
+            app:backgroundTint="@null"
+            android:textStyle="bold"
+            android:elevation="4dp"
+            android:layout_marginTop="16dp" />
 
     </LinearLayout>
 </ScrollView>

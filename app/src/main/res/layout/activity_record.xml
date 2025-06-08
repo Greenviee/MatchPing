@@ -1,67 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#E3F2FD">
+    android:background="#2196F3">
 
-    <!-- 검색창 -->
+    <!-- 1) 파란 헤더 영역 -->
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#2196F3">
+
+        <!-- 1-1) 헤더 안에 검색창 배치 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="10dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/editTextSearch"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="상대 이름 검색"
+                android:textColor="@android:color/white"
+                android:background="@drawable/btn_outline_white"
+                android:padding="8dp"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/buttonSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_edit_button"
+                android:text="검색"
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@null"
+                android:elevation="2dp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 2) 흰색 곡선 처리된 콘텐츠 영역 -->
     <LinearLayout
+        android:id="@+id/contentContainer"
+        android:layout_below="@id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_content_top_rounded"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="24dp"
+        android:gravity="top">
 
-        <EditText
-            android:id="@+id/editTextSearch"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+        <!-- 태그 필터 ChipGroup -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 승률 및 전적 -->
+        <TextView
+            android:id="@+id/textViewWinRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="승: 0, 패: 0, 승률: 0%"
+            android:textSize="16sp"
+            android:textColor="#0D47A1"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 전적 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="상대 이름 검색"
-            android:background="@android:drawable/edit_text"
-            android:padding="8dp"
-            android:singleLine="true" />
-
-        <Button
-            android:id="@+id/buttonSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="검색"
-            android:layout_marginLeft="8dp"
-            android:backgroundTint="#2196F3"
-            android:textColor="#fff" />
+            android:background="#FFFFFF" />
     </LinearLayout>
-
-    <!-- 태그 필터 ChipGroup -->
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroupTags"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        android:layout_marginBottom="8dp" />
-
-    <!-- 승률 및 전적 -->
-    <TextView
-        android:id="@+id/textViewWinRate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="승: 0, 패: 0, 승률: 0%"
-        android:textSize="16sp"
-        android:textColor="#0D47A1"
-        android:padding="8dp"
-        android:background="@android:color/white"
-        android:layout_marginBottom="8dp" />
-
-    <!-- 전적 리스트 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
-</LinearLayout>
+</RelativeLayout>

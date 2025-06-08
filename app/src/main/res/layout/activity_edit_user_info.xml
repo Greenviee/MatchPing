@@ -1,105 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E3F2FD"
-    android:padding="24dp">
+    android:background="#FFFFFF"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
 
-        <!-- 상단 툴바 -->
-        <LinearLayout
+        <!-- 1) 순수 파란색 헤더 -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="20dp">
+            android:layout_height="224dp"
+            android:background="#2196F3">
 
+            <!-- 뒤로가기 버튼 -->
             <ImageButton
                 android:id="@+id/buttonBackEdit"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_gravity="start|top"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_menu_revert"
-                android:contentDescription="뒤로가기"
-                app:tint="#2196F3" />
+                android:tint="#FFFFFF"
+                android:contentDescription="뒤로가기" />
 
+            <!-- 헤더 프로필 이미지 -->
+            <ImageView
+                android:id="@+id/imageProfileEdit"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="32dp"
+                android:contentDescription="프로필 이미지"
+                android:src="@android:drawable/sym_def_app_icon"
+                android:scaleType="centerCrop"
+                android:elevation="4dp" />
+
+            <!-- 헤더 제목 -->
+            <TextView
+                android:id="@+id/textHeaderTitleEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="50dp"
+                android:text="사용자 정보 편집"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- 2) 곡선 처리된 흰색 콘텐츠 컨테이너 -->
+        <LinearLayout
+            android:id="@+id/contentContainerEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-40dp"
+            android:background="@drawable/bg_content_top_rounded"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="56dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- 2-1) 이름 입력란 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- 아이콘: 녹색 원 안 사람 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconNameEdit"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="이름 아이콘"
+                    android:src="@drawable/ic_name" />
+
+                <!-- 입력란: 이름 -->
+                <EditText
+                    android:id="@+id/editTextNameEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="이름"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="4dp" />
+            </LinearLayout>
+
+            <!-- 밑줄 -->
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_marginBottom="16dp"
+                android:background="#BBDEFB" />
+
+            <!-- 2-2) 아이디 입력란 (수정 불가) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- 아이콘: 빨강 원 안 위치 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconIdEdit"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="아이디 아이콘"
+                    android:src="@drawable/ic_id" />
+
+                <!-- 입력란: 아이디 (수정 불가) -->
+                <EditText
+                    android:id="@+id/editTextIdEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="아이디"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="4dp"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- 밑줄 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="#BBDEFB" />
+
+            <!-- 2-3) 전화번호 입력란 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- 아이콘: 오렌지 원 안 전화 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconPhoneEdit"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="전화번호 아이콘"
+                    android:src="@drawable/ic_phone" />
+
+                <!-- 입력란: 전화번호 -->
+                <EditText
+                    android:id="@+id/editTextPhoneEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="전화번호"
+                    android:inputType="phone"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="4dp" />
+            </LinearLayout>
+
+            <!-- 밑줄 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="#BBDEFB" />
+
+            <!-- 2-4) 부수 입력란 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- 아이콘: 파랑 원 안 부수 아이콘 -->
+                <ImageView
+                    android:id="@+id/iconUnitEdit"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="부수 아이콘"
+                    android:src="@drawable/ic_unit" />
+
+                <!-- 입력란: 부수 -->
+                <EditText
+                    android:id="@+id/editTextUnitEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="부수"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="4dp" />
+            </LinearLayout>
+
+            <!-- 2-5) 저장 버튼 -->
+            <Button
+                android:id="@+id/buttonSaveEdit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_edit_button"
+                android:elevation="4dp"
+                android:text="저장"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:backgroundTint="@null"
+                android:layout_marginBottom="16dp" />
+
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageProfileEdit"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@android:drawable/sym_def_app_icon"
-            android:layout_marginBottom="28dp"
-            android:scaleType="centerCrop"
-            android:elevation="4dp" />
-
-        <EditText
-            android:id="@+id/editTextNameEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="이름"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="12dp"
-            android:backgroundTint="#2196F3"
-            android:padding="12dp" />
-
-        <EditText
-            android:id="@+id/editTextIdEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="아이디"
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#2196F3"
-            android:padding="12dp"
-            android:enabled="false" />
-
-        <EditText
-            android:id="@+id/editTextPhoneEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="전화번호"
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#2196F3"
-            android:padding="12dp" />
-
-        <EditText
-            android:id="@+id/editTextUnitEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="부수"
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="#2196F3"
-            android:padding="12dp" />
-
-        <Button
-            android:id="@+id/buttonSaveEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="저장"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#2196F3"
-            android:textSize="16sp"
-            android:elevation="4dp"
-            android:layout_marginBottom="16dp"/>
     </LinearLayout>
 </ScrollView>

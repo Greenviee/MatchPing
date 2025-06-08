@@ -1,68 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="#E3F2FD"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#2196F3"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:padding="28dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textGameResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="경기 결과"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#0D47A1"
-        android:layout_marginBottom="22dp"/>
+    <!-- 1) 파란 헤더 영역 -->
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#2196F3">
 
+        <!-- 헤더 제목: 결과 텍스트 -->
+        <TextView
+            android:id="@+id/textGameResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="24dp"
+            android:text="경기 결과"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <!-- 2) “상대 정보”를 텍스트로 헤더 바로 아래에 배치 -->
+
+    <!-- 3) 흰색 곡선 처리된 콘텐츠 영역 -->
     <TextView
         android:id="@+id/textOpponentInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="상대 정보"
-        android:textSize="18sp"
-        android:layout_marginBottom="10dp"
-        android:textColor="#1565C0"/>
-
-    <TextView
-        android:id="@+id/textSetScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="세트 점수"
-        android:textSize="17sp"
-        android:layout_marginBottom="6dp"/>
-
-    <TextView
-        android:id="@+id/textSetHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="세트별 점수"
-        android:textSize="16sp"
-        android:layout_marginBottom="22dp"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_below="@id/header"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="-29dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/btn_outline_white"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="4dp"
+        android:padding="12dp"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
+    <LinearLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/textOpponentInfo"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_content_top_rounded"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="24dp"
+        android:backgroundTint="#E3F2FD"
+        android:backgroundTintMode="src_atop"
+        android:gravity="center_horizontal">
+
+
+
+        <!-- 3-1) “세트 점수” 및 “세트별 점수” 항목을 표 형태로 -->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 행 1: 세트 점수 -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/textSetScoreLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <!-- 행 사이 분리선 -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BBDEFB"
+                android:layout_marginTop="-8dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- 행 2: 세트별 점수 -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/textSetHistoryLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp" />
+            </TableRow>
+        </TableLayout>
+
+        <!-- 3-2) 분리선 (버튼 위 여백 포함) -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="22dp"
+            android:background="#BBDEFB" />
+
+        <!-- 3-3) “다시 하기” 버튼 -->
         <Button
             android:id="@+id/buttonRematch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_edit_button"
+            android:backgroundTint="#2196F3"
             android:text="다시 하기"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#2196F3"
-            android:layout_marginRight="16dp"/>
+            android:textSize="16sp"
+            android:elevation="4dp"
+            app:backgroundTintMode="src_atop" />
 
+        <!-- 3-4) “메인으로” 버튼 -->
         <Button
             android:id="@+id/buttonGoMain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_edit_button"
+            android:backgroundTint="#2196F3"
             android:text="메인으로"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#42A5F5"/>
+            android:textSize="16sp"
+            android:elevation="4dp"
+            app:backgroundTintMode="src_atop" />
     </LinearLayout>
-</LinearLayout>
+
+</RelativeLayout>
