@@ -6,16 +6,33 @@
     android:orientation="vertical"
     android:padding="0dp">
 
-    <!-- 친구 버튼 -->
-    <ImageButton
-        android:id="@+id/buttonFriend"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="10dp"
-        android:contentDescription="친구 관리"
-        android:src="@drawable/ic_friend"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="centerInside" />
+    <!-- 친구 버튼 + 탁구 팁 텍스트 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/buttonFriend"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="친구 관리"
+            android:src="@drawable/ic_friend"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:id="@+id/tvTip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="로딩 중…"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:paddingStart="12dp" />
+    </LinearLayout>
 
     <!-- 메뉴 1 – 게임 시작 -->
     <FrameLayout

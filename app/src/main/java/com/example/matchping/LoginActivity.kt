@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.messaging.FirebaseMessaging
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -18,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
         val etId    = findViewById<EditText>(R.id.editTextId)
         val etPw    = findViewById<EditText>(R.id.editTextPassword)
@@ -28,15 +28,6 @@ class LoginActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         cbAuto.isChecked = prefs.getBoolean(KEY_AUTO, false)
-
-        // FCM 토큰 갱신/저장
-        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            auth.currentUser?.uid?.let { uid ->
-                FirebaseFirestore.getInstance()
-                    .collection("Users").document(uid)
-                    .update("fcmToken", token)
-            }
-        }
 
         btnLog.setOnClickListener {
             val id = etId.text.toString().trim()
@@ -51,14 +42,6 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, pw)
                 .addOnSuccessListener {
                     Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                    // 로그인 후에도 한번 더 토큰 갱신
-                    FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                        auth.currentUser?.uid?.let { uid ->
-                            FirebaseFirestore.getInstance()
-                                .collection("Users").document(uid)
-                                .update("fcmToken", token)
-                        }
-                    }
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }

@@ -22,7 +22,7 @@ class FriendDetailActivity : AppCompatActivity() {
     private lateinit var friendTagDao: FriendTagDao
 
     // 예시 태그 리스트(필요시 확장)
-    private val tagList = listOf("왼손잡이", "쉐이크", "펜홀더", "너클 서브", "전진 서브", "커트 서브", "드라이브", "속공", "수비형")
+    private val tagList = RecordViewModel.ALL_TAGS
 
     // 현재 친구 uid (인텐트로 받음)
     private lateinit var friendUid: String

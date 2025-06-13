@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase
         Opponent::class,
         MatchResult::class
     ],
-    version = 8 // 꼭 올려주세요!
+    version = 10 // 꼭 올려주세요!
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun friendDao(): FriendDao
