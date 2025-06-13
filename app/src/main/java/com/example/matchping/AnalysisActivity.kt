@@ -1,4 +1,3 @@
-// src/main/java/com/example/matchping/AnalysisActivity.kt
 package com.example.matchping
 
 import android.os.Bundle
@@ -69,7 +68,7 @@ class AnalysisActivity : AppCompatActivity() {
             listOf("선수부") + (1..8).map { "${it}부" }
         ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
-        // 태그 칩 세팅
+        // 태그 칩 세팅 (쉐이크, 펜홀더 단독 선택 로직 유지)
         var shakeChip: Chip?   = null
         var penholdChip: Chip? = null
         RecordViewModel.ALL_TAGS.forEach { tag ->
@@ -99,7 +98,7 @@ class AnalysisActivity : AppCompatActivity() {
         }
         vm.loadRecent()
 
-        // 예측 버튼
+        // 예측 버튼 (입력 구조만 변경)
         btnPredict.setOnClickListener {
             val oppRank = spinnerOpponentRank.selectedItemPosition
             val tags    = chipGroupPredict.checkedChipIds.map { id ->

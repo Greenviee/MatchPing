@@ -1,11 +1,7 @@
-// src/main/java/com/example/matchping/RecordViewModel.kt
 package com.example.matchping
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,8 +25,8 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
         /** "선수부"=0, "1부"=1 … "8부"=8 */
         fun unitStringToInt(unit: String): Int = when (unit) {
             "선수부" -> 0; "1부" -> 1; "2부" -> 2; "3부" -> 3
-            "4부"    -> 4; "5부" -> 5; "6부" -> 6; "7부" -> 7; "8부" -> 8
-            else     -> 0
+            "4부" -> 4; "5부" -> 5; "6부" -> 6; "7부" -> 7; "8부" -> 8
+            else -> 0
         }
 
         /** 부수 검색을 위한 목록 (추가) */
@@ -71,11 +67,9 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
     fun searchByUnit(unit: String) {
         val uid = auth.currentUser?.uid ?: return
         viewModelScope.launch(Dispatchers.IO) {
-            // myUid 필터를 함께 전달
             _searchResults.postValue(dao.getMatchesByUnit(uid, unit))
         }
     }
-
 
     /** 태그로 필터링 */
     fun filterByTag(tag: String) {
@@ -88,8 +82,6 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
 
     /**
      * 테스트용 더미 전적 생성
-     * – 내 부수(myRank) vs 상대 부수 차이에 따른 prior 확률로 승패 결정
-     * – 5판 3선승제 세트 스코어
      */
     fun generateDummyMatches(count: Int = 500, myRank: Int) = viewModelScope.launch(Dispatchers.IO) {
         val uid   = auth.currentUser?.uid ?: return@launch
@@ -97,33 +89,22 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
         val units = listOf("선수부","1부","2부","3부","4부","5부","6부","7부","8부")
 
         repeat(count) { idx ->
-            // 상대 부수, 등급 숫자로 변환
             val oppUnit  = units[rnd.nextInt(units.size)]
             val oppRank  = unitStringToInt(oppUnit)
-
-            // 차이 n, 강·약 구분
             val diff     = oppRank - myRank
             val n        = abs(diff) + 1
             val pHigh    = ((2.0.pow(n.toDouble()) - 1.0) / 2.0.pow(n.toDouble())).toFloat()
-
-            // my 쪽 승리 확률 p 계산
             val p: Float = when {
-                diff == 0   -> 0.5f            // 동등 부수
-                diff > 0    -> pHigh           // 내가 더 강(내Rank<oppRank) → pHigh
-                else        -> 1f - pHigh      // 내가 더 약(내Rank>oppRank) → 역확률
+                diff == 0   -> 0.5f
+                diff > 0    -> pHigh
+                else        -> 1f - pHigh
             }
-
-            // 5판 3선승제 시뮬레이션
             var mySets = 0
             var opSets = 0
             while (mySets < 3 && opSets < 3) {
                 if (rnd.nextFloat() < p) mySets++ else opSets++
             }
-
-            // 랜덤 태그
             val tags = ALL_TAGS.shuffled(rnd).take(rnd.nextInt(1, ALL_TAGS.size))
-
-            // MatchResult 저장
             dao.insert(
                 MatchResult(
                     myUid            = uid,
@@ -139,8 +120,6 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
                 )
             )
         }
-
-        // 완료 후 LiveData 갱신
         _matches.postValue(dao.getMatchesByUser(uid))
     }
 
@@ -166,44 +145,32 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
                 stats[tag] = (w + if (won) 1 else 0) to (t + 1)
             }
         }
-
-        // 태그별 승률
-        val winRate = stats.mapValues { (_, wt) ->
-            if (wt.second == 0) 0f else wt.first.toFloat() / wt.second
-        }
-
+        val winRate = stats.mapValues { (_, wt) -> if (wt.second == 0) 0f else wt.first.toFloat() / wt.second }
         val totalWins  = stats.values.sumOf { it.first }
         val totalGames = stats.values.sumOf { it.second }
         val overall    = if (totalGames == 0) 0f else totalWins.toFloat() / totalGames
 
-        // 1) 왼손잡이 적응력
         val lt            = stats["왼손잡이"]?.second ?: 0
         val lw            = stats["왼손잡이"]?.first  ?: 0
         val leftRate      = if (lt == 0) overall else lw.toFloat() / lt
-        val nonLeftRate   = if (totalGames - lt == 0) overall
-        else (totalWins - lw).toFloat() / (totalGames - lt)
+        val nonLeftRate   = if (totalGames - lt == 0) overall else (totalWins - lw).toFloat() / (totalGames - lt)
         val leftHandScore = 1f - abs(leftRate - nonLeftRate)
 
-        // 2) 펜홀더 대응력
         val shakeRate    = winRate["쉐이크"]  ?: overall
         val penholdRate  = winRate["펜홀더"] ?: overall
         val penholdScore = 1f - abs(shakeRate - penholdRate)
 
-        // 3) 서브 대응력
         val serveTags   = listOf("너클 서브","전진 서브","커트 서브")
         val serveRates  = serveTags.map { winRate[it] ?: overall }
-        val serveScore  = 1f - ((serveRates.maxOrNull() ?: overall)
-                - (serveRates.minOrNull() ?: overall))
+        val serveScore  = 1f - ((serveRates.maxOrNull() ?: overall) - (serveRates.minOrNull() ?: overall))
 
-        // 4) 자신감 (더 높은 부수 상대 승률)
         val higherStats = records
             .filter { userRank != null && unitStringToInt(it.opponentUnit) > userRank }
             .fold(0 to 0) { acc, rec ->
                 val (w, t) = acc
                 (w + if (rec.result == "승") 1 else 0) to (t + 1)
             }
-        val confidence = if (higherStats.second == 0) overall
-        else higherStats.first.toFloat() / higherStats.second
+        val confidence = if (higherStats.second == 0) overall else higherStats.first.toFloat() / higherStats.second
 
         return AbilityScores(
             leftHandAdapt   = leftHandScore.coerceIn(0f, 1f),
@@ -214,16 +181,29 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
         )
     }
 
-    /** prior 확률(p) → 모델 예측 */
+    /**
+     * 머신러닝 기반 승률 예측 (내 능력치 5, 내 부수, 상대 부수, 상대 태그 9개)
+     * - 기존 predictWithTFLite 유지, 내부만 수정
+     */
     fun predictWithTFLite(
-        opponentTags: List<String>,
-        myRank: Int,
-        oppRank: Int
+        tags: List<String>,      // 상대 태그 리스트
+        myRank: Int,             // 내 부수 (정수)
+        oppRank: Int             // 상대 부수 (정수)
     ): Float {
-        val n = abs(myRank - oppRank) + 1
-        // prior 확률 계산
-        val p = ((2.0.pow(n.toDouble()) - 1.0)
-                / 2.0.pow(n.toDouble())).toFloat()
-        return classifier.predict(opponentTags, p)
+        val scores = calculateAbilityScores(myRank)
+        val abilityArray = floatArrayOf(
+            scores.leftHandAdapt,
+            scores.penholdAdapt,
+            scores.serveAdapt,
+            scores.confidence,
+            scores.overallWinRate
+        )
+        // 입력: 내 능력치(5), 내 부수(1), 상대 부수(1), 상대 태그(9) → 총 16개
+        return classifier.predict(
+            abilityArray,
+            myRank,
+            oppRank,
+            tags
+        )
     }
 }

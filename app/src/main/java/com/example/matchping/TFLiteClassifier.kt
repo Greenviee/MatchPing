@@ -47,29 +47,30 @@ class TFLiteClassifier(private val context: Context) {
      * @return 예측 승률 [0..1], 인터프리터가 없으면 0.5
      */
     fun predict(
-        opponentTags: List<String>,
-        formula: Float
+        myAbility: FloatArray,      // size=5
+        myUnit: Int,                // size=1
+        oppUnit: Int,               // size=1
+        oppTags: List<String>       // size=9
     ): Float {
-        val interp = interpreter ?: return 0.5f
+        // slot 0: 태그 9
+        val tagVec = FloatArray(9) { i -> if (TAGS[i] in oppTags) 1f else 0f }
+        val in0 = arrayOf(tagVec)                     // [1][9]
 
-        // (1) 태그 one-hot [1×9]
-        val tagVec = FloatArray(TAGS.size) { i ->
-            if (TAGS[i] in opponentTags) 1f else 0f
-        }
-        val inputTags = arrayOf(tagVec)                 // shape=[1][9]
+        // slot 1: 내 부수 1
+        val in1 = arrayOf(floatArrayOf(myUnit.toFloat()))  // [1][1]
 
-        // (2) prior 공식 [1×1]
-        val inputFormula = arrayOf(floatArrayOf(formula))  // shape=[1][1]
+        // slot 2: 상대 부수 1
+        val in2 = arrayOf(floatArrayOf(oppUnit.toFloat())) // [1][1]
 
-        // (3) 출력 버퍼
-        val output = Array(1) { FloatArray(1) }           // shape=[1][1]
+        // slot 3: 능력치 5
+        val in3 = arrayOf(myAbility)                  // [1][5]
 
-        // (4) run
-        interp.runForMultipleInputsOutputs(
-            arrayOf<Any>(inputTags, inputFormula),
-            mapOf(0 to output)
-        )
+        val inputs  = arrayOf<Any>(in0, in1, in2, in3)
+        val outputs = mutableMapOf<Int, Any>(0 to Array(1) { FloatArray(1) })
 
-        return output[0][0].coerceIn(0f,1f)
+        interpreter!!.runForMultipleInputsOutputs(inputs, outputs)
+        return (outputs[0] as Array<FloatArray>)[0][0].coerceIn(0f,1f)
     }
+
+
 }
