@@ -13,18 +13,11 @@ class GameMatchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game_match)
 
         val buttonBack = findViewById<ImageButton>(R.id.buttonBack)
-        val buttonMatchFriend = findViewById<Button>(R.id.buttonMatchFriend)
         val buttonMatchOpponent = findViewById<Button>(R.id.buttonMatchOpponent)
         val buttonAddOpponent = findViewById<Button>(R.id.buttonAddOpponent)
 
         buttonBack.setOnClickListener {
             finish() // 또는 MainActivity로 이동
-        }
-
-        buttonMatchFriend.setOnClickListener {
-            // 친구 선택 및 FCM 초대 화면으로 이동
-            val intent = Intent(this, FriendSelectActivity::class.java)
-            startActivity(intent)
         }
 
         buttonMatchOpponent.setOnClickListener {

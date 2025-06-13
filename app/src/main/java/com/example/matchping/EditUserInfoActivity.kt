@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import java.io.File
+import java.io.FileOutputStream
 
 class EditUserInfoActivity : AppCompatActivity() {
 
@@ -24,8 +25,7 @@ class EditUserInfoActivity : AppCompatActivity() {
     private lateinit var buttonSaveEdit: Button
     private lateinit var buttonBackEdit: ImageButton
 
-    private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance()
+    private val db   = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,79 +34,91 @@ class EditUserInfoActivity : AppCompatActivity() {
 
         imageProfileEdit = findViewById(R.id.imageProfileEdit)
         editTextNameEdit = findViewById(R.id.editTextNameEdit)
-        editTextIdEdit = findViewById(R.id.editTextIdEdit)
-        editTextPhoneEdit = findViewById(R.id.editTextPhoneEdit)
+        editTextIdEdit   = findViewById(R.id.editTextIdEdit)
+        editTextPhoneEdit= findViewById(R.id.editTextPhoneEdit)
         editTextUnitEdit = findViewById(R.id.editTextUnitEdit)
-        buttonSaveEdit = findViewById(R.id.buttonSaveEdit)
-        buttonBackEdit = findViewById(R.id.buttonBackEdit)
+        buttonSaveEdit   = findViewById(R.id.buttonSaveEdit)
+        buttonBackEdit   = findViewById(R.id.buttonBackEdit)
 
         val uid = auth.currentUser?.uid ?: return
 
-        // 뒤로가기 버튼: 단순 finish
-        buttonBackEdit.setOnClickListener {
-            finish()
-        }
+        // 뒤로가기
+        buttonBackEdit.setOnClickListener { finish() }
 
-        // Firestore에서 기존 사용자 정보 가져오기
-        db.collection("Users").document(uid).get().addOnSuccessListener { doc ->
-            val user = doc.toObject(User::class.java)
-            user?.let {
-                editTextNameEdit.setText(it.name)
-                editTextIdEdit.setText(it.id)
-                editTextPhoneEdit.setText(it.phone)
-                editTextUnitEdit.setText(it.unit)
-                if (!it.profileImageUrl.isNullOrEmpty()) {
-                    Glide.with(this)
-                        .load(it.profileImageUrl)
-                        .error(android.R.drawable.sym_def_app_icon)
-                        .into(imageProfileEdit)
-                } else {
-                    imageProfileEdit.setImageResource(android.R.drawable.sym_def_app_icon)
+        // 기존 정보 로드
+        db.collection("Users").document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+                doc.toObject(User::class.java)?.let { user ->
+                    editTextNameEdit.setText(user.name)
+                    editTextIdEdit.setText(user.id)
+                    editTextPhoneEdit.setText(user.phone)
+                    editTextUnitEdit.setText(user.unit)
+                    // profileImageUrl 필드에 로컬 경로를 쓴다고 가정
+                    val localPath = user.profileImageUrl
+                    if (localPath.isNotEmpty()) {
+                        Glide.with(this)
+                            .load(File(localPath))
+                            .error(android.R.drawable.sym_def_app_icon)
+                            .into(imageProfileEdit)
+                    } else {
+                        imageProfileEdit.setImageResource(android.R.drawable.sym_def_app_icon)
+                    }
                 }
             }
-        }
 
-        // 프로필 사진 클릭시 갤러리 열기
+        // 이미지 선택
         imageProfileEdit.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, PICK_IMAGE)
+            startActivityForResult(
+                Intent(Intent.ACTION_PICK).apply { type = "image/*" },
+                PICK_IMAGE
+            )
         }
 
-        // 저장 버튼
+        // 저장
         buttonSaveEdit.setOnClickListener {
-            val name = editTextNameEdit.text.toString().trim()
+            val name  = editTextNameEdit.text.toString().trim()
+            val id    = editTextIdEdit.text.toString().trim()
             val phone = editTextPhoneEdit.text.toString().trim()
-            val unit = editTextUnitEdit.text.toString().trim()
-            if (name.isEmpty() || phone.isEmpty() || unit.isEmpty()) {
+            val unit  = editTextUnitEdit.text.toString().trim()
+            if (name.isEmpty() || id.isEmpty() || phone.isEmpty() || unit.isEmpty()) {
                 Toast.makeText(this, "모든 항목을 입력하세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (imageUri != null) {
-                // 새 프로필 이미지 Storage 업로드
-                val ref = storage.reference.child("profile_images/$uid.jpg")
-                ref.putFile(imageUri!!)
-                    .continueWithTask { task ->
-                        if (!task.isSuccessful) {
-                            throw task.exception ?: Exception("사진 업로드 실패")
-                        }
-                        ref.downloadUrl
+            // 1) 사진이 선택되었다면 로컬에 복사
+            val localPath = imageUri?.let { uri ->
+                val filename = "profile_${uid}.jpg"
+                val destFile = File(filesDir, filename)
+                contentResolver.openInputStream(uri)?.use { input ->
+                    FileOutputStream(destFile).use { output ->
+                        input.copyTo(output)
                     }
-                    .addOnSuccessListener { downloadUri ->
-                        saveUserInfo(uid, name, phone, unit, downloadUri.toString())
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "프로필 사진 업로드 실패", Toast.LENGTH_SHORT).show()
-                    }
-            } else {
-                // 기존 프로필 이미지 유지
-                db.collection("Users").document(uid).get().addOnSuccessListener { doc ->
-                    val user = doc.toObject(User::class.java)
-                    val profileUrl = user?.profileImageUrl ?: ""
-                    saveUserInfo(uid, name, phone, unit, profileUrl)
                 }
+                destFile.absolutePath
+            } ?: ""  // 선택 없으면 빈 문자열
+
+            // 2) Firestore에 사용자 정보만 업데이트
+            val updates = mutableMapOf<String, Any>(
+                "name" to name,
+                "id"   to id,
+                "phone" to phone,
+                "unit"  to unit
+            )
+            // 로컬 경로는 profileImageUrl 필드에 함께 저장해 둡니다
+            if (localPath.isNotEmpty()) {
+                updates["profileImageUrl"] = localPath
             }
+
+            db.collection("Users").document(uid)
+                .update(updates)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "정보 저장 실패", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
@@ -114,29 +126,10 @@ class EditUserInfoActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
             imageUri = data.data
-            // 시스템 아이콘 또는 선택 이미지 미리보기
             Glide.with(this)
                 .load(imageUri)
                 .error(android.R.drawable.sym_def_app_icon)
                 .into(imageProfileEdit)
         }
-    }
-
-    private fun saveUserInfo(uid: String, name: String, phone: String, unit: String, imageUrl: String) {
-        val updates = mapOf(
-            "name" to name,
-            "phone" to phone,
-            "unit" to unit,
-            "profileImageUrl" to imageUrl
-        )
-        db.collection("Users").document(uid)
-            .update(updates)
-            .addOnSuccessListener {
-                Toast.makeText(this, "정보가 저장되었습니다.", Toast.LENGTH_SHORT).show()
-                finish()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "정보 저장 실패", Toast.LENGTH_SHORT).show()
-            }
     }
 }

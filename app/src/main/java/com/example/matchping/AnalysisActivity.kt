@@ -1,5 +1,6 @@
 package com.example.matchping
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -8,6 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
@@ -115,6 +118,7 @@ class AnalysisActivity : AppCompatActivity() {
     }
 
     private fun drawRadarChart(scores: RecordViewModel.AbilityScores) {
+        // 데이터 엔트리
         val entries = listOf(
             scores.leftHandAdapt,
             scores.penholdAdapt,
@@ -123,20 +127,62 @@ class AnalysisActivity : AppCompatActivity() {
             scores.overallWinRate
         ).map { RadarEntry(it * 100) }
 
+        // 라벨
         val labels = listOf(
             "왼손 대응력","펜홀더 대응",
             "서브 대응","자신감","승률"
         )
 
-        val dataSet = RadarDataSet(entries, "능력치").apply {
-            lineWidth    = 2f
+        // 데이터셋 스타일
+        val dataSet = RadarDataSet(entries, "").apply {
+            // 선 색상 & 두께
+            color = ContextCompat.getColor(this@AnalysisActivity, R.color.primary_blue)
+            lineWidth = 2.5f
+            // 채우기 색상 & 투명도
+            fillColor = ContextCompat.getColor(this@AnalysisActivity, R.color.primary_blue)
             setDrawFilled(true)
-            fillAlpha     = 128
+            fillAlpha = 180
+            // 점(원) 스타일
+            setDrawHighlightCircleEnabled(true)
+            highlightCircleStrokeWidth = 2f
+            setDrawHighlightIndicators(false)
+            // 값 텍스트 숨기기
+            setDrawValues(false)
         }
-        radarChart.data      = RadarData(dataSet)
-        radarChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-        radarChart.yAxis.axisMinimum    = 0f
-        radarChart.yAxis.axisMaximum    = 100f
+
+        // RadarData 에 연결
+        val radarData = RadarData(dataSet).apply {
+            // 폰트
+            setValueTextSize(0f) // 값 표시 안함
+        }
+
+        radarChart.apply {
+            // ① Description(“Description Label”) 끄기
+            description.isEnabled = false
+
+            // ② Legend(파란 박스) 끄기
+            legend.isEnabled = false
+        }
+
+
+        // X축(라벨) 스타일
+        radarChart.xAxis.apply {
+            valueFormatter = IndexAxisValueFormatter(labels)
+            textSize = 14f
+            //typeface = ResourcesCompat.getFont(this@AnalysisActivity, R.font.roboto_medium)
+            textColor = Color.DKGRAY
+        }
+
+        // Y축(축 범위) 스타일
+        radarChart.yAxis.apply {
+            axisMinimum = 0f
+            axisMaximum = 100f
+            setDrawLabels(false) // 숫자 레이블 숨기기
+            // 그리드 라인 스타일만 유지
+        }
+
+        // 데이터 적용 & 갱신
+        radarChart.data = radarData
         radarChart.invalidate()
     }
 }

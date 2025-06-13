@@ -74,7 +74,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- 아이콘: 녹색 원 안의 사람 아이콘 -->
                 <ImageView
                     android:id="@+id/iconName"
                     android:layout_width="32dp"
@@ -83,7 +82,6 @@
                     android:contentDescription="이름 아이콘"
                     android:src="@drawable/ic_name" />
 
-                <!-- 레이블: '이름' -->
                 <TextView
                     android:id="@+id/textName"
                     android:layout_width="wrap_content"
@@ -93,11 +91,8 @@
                     android:textColor="#0D47A1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-
             </LinearLayout>
 
-            <!-- 밑줄 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -112,7 +107,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- 아이콘: 빨강 원 안의 위치 핀 아이콘 -->
                 <ImageView
                     android:id="@+id/iconId"
                     android:layout_width="32dp"
@@ -121,7 +115,6 @@
                     android:contentDescription="아이디 아이콘"
                     android:src="@drawable/ic_id" />
 
-                <!-- 레이블: '아이디' -->
                 <TextView
                     android:id="@+id/textId"
                     android:layout_width="wrap_content"
@@ -131,10 +124,8 @@
                     android:textColor="#0D47A1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
-            <!-- 밑줄 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -149,7 +140,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- 아이콘: 오렌지 원 안의 전화 아이콘 -->
                 <ImageView
                     android:id="@+id/iconPhone"
                     android:layout_width="32dp"
@@ -158,7 +148,6 @@
                     android:contentDescription="전화번호 아이콘"
                     android:src="@drawable/ic_phone" />
 
-                <!-- 레이블: '전화번호' -->
                 <TextView
                     android:id="@+id/textPhone"
                     android:layout_width="wrap_content"
@@ -168,10 +157,8 @@
                     android:textColor="#0D47A1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
-            <!-- 밑줄 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -182,11 +169,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- 아이콘: 파랑 원 안의 부수 아이콘 -->
                 <ImageView
                     android:id="@+id/iconUnit"
                     android:layout_width="32dp"
@@ -195,7 +181,6 @@
                     android:contentDescription="부수 아이콘"
                     android:src="@drawable/ic_unit" />
 
-                <!-- 레이블: '부수' -->
                 <TextView
                     android:id="@+id/textUnit"
                     android:layout_width="wrap_content"
@@ -205,7 +190,38 @@
                     android:textColor="#0D47A1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+            </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="#BBDEFB" />
+
+            <!-- 새로운 위치 Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iconLocation"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="위치 아이콘"
+                    android:src="@drawable/ic_unit" />
+
+                <TextView
+                    android:id="@+id/textLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="로딩 중"
+                    android:textColor="#0D47A1"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- 2-5) 편집 버튼 -->
