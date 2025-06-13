@@ -84,43 +84,59 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
      * 테스트용 더미 전적 생성
      */
     fun generateDummyMatches(count: Int = 500, myRank: Int) = viewModelScope.launch(Dispatchers.IO) {
-        val uid   = auth.currentUser?.uid ?: return@launch
-        val rnd   = Random(System.currentTimeMillis())
+        val uid = auth.currentUser?.uid ?: return@launch
+        val rnd = Random(System.currentTimeMillis())
         val units = listOf("선수부","1부","2부","3부","4부","5부","6부","7부","8부")
 
+        // 1) 리스트에 더미를 모아서
+        val dummyList = mutableListOf<MatchResult>()
         repeat(count) { idx ->
-            val oppUnit  = units[rnd.nextInt(units.size)]
-            val oppRank  = unitStringToInt(oppUnit)
-            val diff     = oppRank - myRank
-            val n        = abs(diff) + 1
-            val pHigh    = ((2.0.pow(n.toDouble()) - 1.0) / 2.0.pow(n.toDouble())).toFloat()
-            val p: Float = when {
+            // 1. 상대 부수 랜덤 선택
+            val oppUnit = units[rnd.nextInt(units.size)]
+            val oppRank = unitStringToInt(oppUnit)
+
+            // 2. prior 확률 계산
+            val diff  = oppRank - myRank
+            val n     = abs(diff) + 1
+            val pHigh = ((2.0.pow(n.toDouble()) - 1) / 2.0.pow(n.toDouble())).toFloat()
+            val prior = when {
                 diff == 0   -> 0.5f
-                diff > 0    -> pHigh
+                diff > 0    -> pHigh    // 내가 더 강할 때
                 else        -> 1f - pHigh
             }
+
+            // 3. 5판 3선승제 시뮬레이션
             var mySets = 0
             var opSets = 0
             while (mySets < 3 && opSets < 3) {
-                if (rnd.nextFloat() < p) mySets++ else opSets++
+                if (rnd.nextFloat() < prior) mySets++ else opSets++
             }
-            val tags = ALL_TAGS.shuffled(rnd).take(rnd.nextInt(1, ALL_TAGS.size))
-            dao.insert(
-                MatchResult(
-                    myUid            = uid,
-                    opponentName     = "Opponent${idx + 1}",
-                    opponentUnit     = oppUnit,
-                    date             = System.currentTimeMillis()
-                            - rnd.nextLong(0, 365L * 24 * 60 * 60 * 1000),
-                    result           = if (mySets > opSets) "승" else "패",
-                    mySetScore       = mySets,
-                    opponentSetScore = opSets,
-                    detail           = "",
-                    tags             = tags
-                )
+
+            // 4. 랜덤 태그
+            val tags = ALL_TAGS.shuffled(rnd)
+                .take(rnd.nextInt(1, ALL_TAGS.size))
+
+            // 5. MatchResult 객체 생성
+            dummyList += MatchResult(
+                myUid            = uid,
+                opponentName     = "DummyOpponent${idx + 1}",
+                opponentUnit     = oppUnit,
+                date             = System.currentTimeMillis()
+                        - rnd.nextLong(0, 365L * 24 * 60 * 60 * 1000),
+                result           = if (mySets > opSets) "승" else "패",
+                mySetScore       = mySets,
+                opponentSetScore = opSets,
+                detail           = "",      // 필요 시 세트별 기록을 포맷해서 넣어주세요
+                tags             = tags
             )
         }
-        _matches.postValue(dao.getMatchesByUser(uid))
+
+        // 2) DAO에 일괄 삽입
+        dao.insertAll(dummyList)
+
+        // 3) LiveData 한 번만 갱신
+        val updated = dao.getMatchesByUser(uid)
+        _matches.postValue(updated)
     }
 
     /** 능력치 계산 결과를 담을 데이터 클래스 */

@@ -10,6 +10,9 @@ import androidx.room.Query
 interface MatchResultDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(results: List<MatchResult>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(matchResult: MatchResult)
 
     /** 전체 전적 (기존) */
