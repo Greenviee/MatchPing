@@ -25,7 +25,6 @@ class LoginActivity : AppCompatActivity() {
         val cbAuto  = findViewById<CheckBox>(R.id.checkBoxAutoLogin)
         val btnLog  = findViewById<Button>(R.id.buttonLogin)
         val btnSign = findViewById<Button>(R.id.buttonSignup)
-        val btnGuest = findViewById<Button>(R.id.buttonGuest)
 
         val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         cbAuto.isChecked = prefs.getBoolean(KEY_AUTO, false)
@@ -71,10 +70,6 @@ class LoginActivity : AppCompatActivity() {
 
         btnSign.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
-        }
-        btnGuest.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
         }
     }
 

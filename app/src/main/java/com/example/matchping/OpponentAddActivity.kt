@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class OpponentAddActivity : AppCompatActivity() {
     private lateinit var appDatabase: AppDatabase
     private lateinit var opponentDao: OpponentDao
-    private val tagList = listOf("왼손잡이", "쉐이크", "횡서브", "커트", "드라이브", "속공", "수비형", "장타", "스매시", "플릭")
+    private val tagList = listOf("왼손잡이", "쉐이크", "펜홀더", "너클 서브", "전진 서브", "커트 서브", "드라이브", "속공", "수비형")
     private val unitList = listOf("선수부", "1부", "2부", "3부", "4부", "5부", "6부", "7부", "8부")
 
     override fun onCreate(savedInstanceState: Bundle?) {

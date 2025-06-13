@@ -35,9 +35,7 @@ class RecordActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
 
         val tagList = listOf(
-            "왼손잡이", "쉐이크", "횡서브", "커트",
-            "드라이브", "속공", "수비형", "장타",
-            "스매시", "플릭"
+            "왼손잡이", "쉐이크", "펜홀더", "너클 서브", "전진 서브", "커트 서브", "드라이브", "속공", "수비형"
         )
         tagList.forEach { t ->
             chips.addView(Chip(this).apply {
