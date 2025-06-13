@@ -48,6 +48,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.play.services.location)
     kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     implementation("androidx.room:room-runtime:2.6.1")
