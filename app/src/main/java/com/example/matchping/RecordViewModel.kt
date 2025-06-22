@@ -80,6 +80,15 @@ class RecordViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /** 전적초기화 */
+    fun clearRecords() = viewModelScope.launch(Dispatchers.IO) {
+        val uid = auth.currentUser?.uid ?: return@launch
+        dao.deleteByUser(uid)
+        // 삭제 후 빈 리스트로 갱신
+        _matches.postValue(emptyList())
+        _searchResults.postValue(emptyList())
+    }
+
     /**
      * 테스트용 더미 전적 생성
      */

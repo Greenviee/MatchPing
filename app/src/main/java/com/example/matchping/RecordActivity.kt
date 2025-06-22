@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,7 @@ class RecordActivity : AppCompatActivity() {
     private lateinit var chips: ChipGroup
     private lateinit var tvWinRate: TextView
     private lateinit var adapter: RecordAdapter
+    private lateinit var btnResetRecords: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,7 @@ class RecordActivity : AppCompatActivity() {
         spinnerUnits = findViewById(R.id.spinnerUnits)
         chips        = findViewById(R.id.chipGroupTags)
         tvWinRate    = findViewById(R.id.textViewWinRate)
+        btnResetRecords = findViewById(R.id.buttonResetRecords)
 
         // RecyclerView 세팅
         adapter = RecordAdapter()
@@ -107,6 +110,11 @@ class RecordActivity : AppCompatActivity() {
             }
             // ChipGroup 선택 초기화
             chips.clearCheck()
+        }
+
+        btnResetRecords.setOnClickListener {
+            vm.clearRecords()
+            Toast.makeText(this, "전적이 초기화되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

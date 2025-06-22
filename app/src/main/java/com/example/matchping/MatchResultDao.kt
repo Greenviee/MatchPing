@@ -27,6 +27,10 @@ interface MatchResultDao {
     @Query("SELECT * FROM matches WHERE opponentName = :name ORDER BY date DESC")
     suspend fun getMatchesByOpponent(name: String): List<MatchResult>
 
+    /** 전적 삭제 */
+    @Query("DELETE FROM matches WHERE myUid = :uid")
+    suspend fun deleteByUser(uid: String)
+
     /** ◆ 사용자별 전적만 가져오기 (기존) */
     @Query("""
       SELECT * FROM matches

@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
@@ -20,6 +21,9 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AnalysisActivity : AppCompatActivity() {
 
@@ -31,6 +35,7 @@ class AnalysisActivity : AppCompatActivity() {
     private lateinit var btnPredict: Button
     private lateinit var btnGenerateDummy: Button
     private lateinit var tvPredicted: TextView
+    private lateinit var tvRecommendations: TextView
 
     private val auth = FirebaseAuth.getInstance()
     private val db   = FirebaseFirestore.getInstance()
@@ -46,6 +51,7 @@ class AnalysisActivity : AppCompatActivity() {
         btnPredict          = findViewById(R.id.button_predict)
         btnGenerateDummy    = findViewById(R.id.button_generate_dummy)
         tvPredicted         = findViewById(R.id.text_predicted_win)
+        tvRecommendations   = findViewById(R.id.text_recommendations)
 
         // 내 부수 로드
         btnPredict.isEnabled = false
@@ -114,6 +120,11 @@ class AnalysisActivity : AppCompatActivity() {
         // 더미 생성 버튼
         btnGenerateDummy.setOnClickListener {
             vm.generateDummyMatches(500, myRank)
+        }
+        findViewById<Button>(R.id.button_recommend).setOnClickListener {
+            lifecycleScope.launch {
+                recommendStrategies()
+            }
         }
     }
 
@@ -184,5 +195,50 @@ class AnalysisActivity : AppCompatActivity() {
         // 데이터 적용 & 갱신
         radarChart.data = radarData
         radarChart.invalidate()
+    }
+
+    private suspend fun recommendStrategies() {
+        val oppRank = spinnerOpponentRank.selectedItemPosition
+
+        // ① 가능한 태그 조합 생성 (1개, 2개 조합)
+        val allTags = RecordViewModel.ALL_TAGS
+        val combos = mutableListOf<List<String>>()
+
+        // 싱글 태그
+        combos += allTags.map { listOf(it) }
+
+        // 페어 태그 (쉐이크+펜홀더 제외)
+        for (i in allTags.indices) {
+            for (j in i + 1 until allTags.size) {
+                val t1 = allTags[i]
+                val t2 = allTags[j]
+                if ( (t1 == "쉐이크" && t2 == "펜홀더")
+                    || (t1 == "펜홀더" && t2 == "쉐이크") ) {
+                    continue
+                }
+                combos += listOf(t1, t2)
+            }
+        }
+
+        // ② 승률 예측
+        val scored = combos.map { tags ->
+            val p = vm.predictWithTFLite(tags, myRank, oppRank) * 100f
+            tags to p
+        }
+
+        // ③ 정렬 & 상위 3개 추출
+        val top3 = scored
+            .sortedByDescending { it.second }
+            .take(3)
+
+        // ④ UI로 표시 (메인 스레드)
+        withContext(Dispatchers.Main) {
+            tvRecommendations.text = buildString {
+                append("📌 추천 전략 (예상 승률)\n")
+                top3.forEachIndexed { idx, (tags, rate) ->
+                    append("${idx + 1}. [${tags.joinToString(", ")}] → ${"%.1f".format(rate)}%\n")
+                }
+            }
+        }
     }
 }

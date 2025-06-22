@@ -92,6 +92,15 @@
             android:padding="16dp"
             android:background="#FFFFFF"
             android:layout_marginBottom="16dp" />
+        <Button
+            android:id="@+id/buttonResetRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전적 초기화"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_button_orange"
+            android:padding="10dp"
+            android:layout_marginStart="8dp" />
 
         <!-- 전적 리스트 -->
         <androidx.recyclerview.widget.RecyclerView
